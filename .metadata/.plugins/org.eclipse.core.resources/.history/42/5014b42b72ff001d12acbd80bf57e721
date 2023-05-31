@@ -1,0 +1,5 @@
+package com.greedy.section01.javaconfig;
+
+public interface Mapper {
+
+}

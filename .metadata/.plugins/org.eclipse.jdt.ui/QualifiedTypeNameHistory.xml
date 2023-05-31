@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.apache.ibatis.mapping.Environment"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.datasource.pooled.PooledDataSource"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.session.Configuration"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.annotations.Mapper"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.annotations.Select"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.io.Resources"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSessionFactoryBuilder"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSessionFactory"/>
+<fullyQualifiedTypeName name="com.greedy.section01.xmlconfig.Template"/>
+</qualifiedTypeNameHistroy>

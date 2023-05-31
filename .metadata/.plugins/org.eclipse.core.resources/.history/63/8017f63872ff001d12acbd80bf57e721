@@ -1,0 +1,8 @@
+package com.greedy.section01.javaconfig;
+
+public interface Mapper {
+	
+	@Select("SELECT SYSDATE FROM DUAL")
+	java.util.Date selectSysdate();
+
+}
