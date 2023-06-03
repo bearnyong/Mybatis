@@ -20,9 +20,13 @@ public class Application01 {
 			
 			SqlSession session = sqlSessionFactory.openSession(false); //최종적으로 세션 넘기기...
 			
-			java.util.Date date = session.selectOne("mapper.selectSysdate");
+			java.util.Date date = session.selectOne("mapper123.selectSysdate");
 			System.out.println(date);
-			session.close();
+			
+			session.close(); //session을 try 구문 안에서 작성해줬기 때문에 닫아주는 것도 try문 안에서 닫아줘야함
+			
+			// try -> 오류 -> catch -> finally
+			// try -> 실행 완료 -> finally...
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

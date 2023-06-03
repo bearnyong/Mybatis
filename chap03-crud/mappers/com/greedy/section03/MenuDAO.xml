@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+	매퍼는 DAO 인터페이스와 동일한 패키지에 두고 DAO 인터페이스의 풀네임을 namespace로 지정해야 한다.
+	또한 mapper 인터페이스와 xml의 이름이 동일해야 하며
+	작성한 메소드의 이름과 id가 일치하며 리턴 타입이 일치하는 쿼리문을 모두 작성해야 한다.
+ -->
+
+<mapper namespace="com.greedy.section03.MenuDAO">
+	
+	<!-- 조회할 컬럼과 DTO를 매핑시키기 위한 설정 -->
+	<resultMap type="com.greedy.section03.MenuDTO" id="menuResultMap" >
+		<id property="code" column="MENU_CODE"/>
+		<result property="name" column="MENU_NAME"/>
+		<result property="price" column="MENU_PRICE"/>
+		<result property="categoryCode" column="CATEGORY_CODE"/>
+		<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+	</resultMap>
+	
+	<select id="selectAllMenu" resultMap="menuResultMap">
+		SELECT 
+			   *
+		  FROM TBL_MENU
+		 WHERE ORDERABLE_STATUS = 'Y'
+		 ORDER BY MENU_CODE
+	</select>
+	
+	<select id="selectMenuByCode" resultMap="menuResultMap">
+		SELECT
+		       MENU_CODE ,
+		       MENU_NAME ,
+		       MENU_PRICE ,
+		       CATEGORY_CODE ,
+		       ORDERABLE_STATUS
+		  FROM TBL_MENU
+		 WHERE ORDERABLE_STATUS = 'Y'
+		   AND MENU_CODE = #{ code }
+	</select>
+	<insert id="insertMenu" parameterType="com.greedy.section03.MenuDTO">
+		INSERT
+		  INTO TBL_MENU
+		  (
+		  	MENU_CODE ,
+		  	MENU_NAME ,
+		  	MENU_PRICE ,
+		  	CATEGORY_CODE ,
+		  	ORDERABLE_STATUS
+		  )
+		  VALUES
+		  (
+		  	SEQ_MENU_CODE.NEXTVAL ,
+		  	#{ name } ,
+		  	#{ price } ,
+		  	#{ categoryCode } ,
+		  	'Y'
+		  )
+	</insert>
+	
+	<update id="modifyMenu" parameterType="com.greedy.section03.ModifyMenuDTO">
+		UPDATE TBL_MENU
+		   SET MENU_NAME = #{name} ,
+		   	   MENU_PRICE = #{price} ,
+		   	   CATEGORY_CODE = #{categoryCode}
+		 WHERE MENU_CODE = #{code}
+	</update>
+	
+	<delete id="removeMenu">
+		DELETE TBL_MENU
+		 WHERE MENU_CODE = #{code}
+	</delete>
+</mapper>
