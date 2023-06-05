@@ -45,6 +45,8 @@ public class Application01 {
 
 	}
 
+	
+	/*case2*/
 	private static Map<String, String> inputMenuCode() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("메뉴 코드를 입력해주세요 : ");
@@ -56,6 +58,8 @@ public class Application01 {
 		return parameter;
 	}
 
+	
+	/*case3*/
 	private static Map<String, String> inputMenu() {
 
 		Scanner sc = new Scanner(System.in);
@@ -75,7 +79,10 @@ public class Application01 {
 
 		return parmeter;
 	}
+	
+	
 
+	/*case4*/
 	private static Map<String, String> inputModifyMenu() {
 
 		Scanner sc = new Scanner(System.in);

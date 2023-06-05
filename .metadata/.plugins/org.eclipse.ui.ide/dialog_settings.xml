@@ -4,4 +4,20 @@
 		<item key="ResourceViewer.STORE_SORT_TYPE" value="1"/>
 		<item key="ResourceWorkingSetFilter.STORE_WORKING_SET" value="Aggregate for window 1685501835467"/>
 	</section>
+	<section name="SmartImportWizard">
+		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
+		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
+		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\DEV\04_Mybatis\Mybatis"/>
+		</list>
+	</section>
+	<section name="CleanDialogSettings">
+		<item key="DIALOG_X_ORIGIN" value="670"/>
+		<item key="DIALOG_Y_ORIGIN" value="221"/>
+		<item key="DIALOG_WIDTH" value="581"/>
+		<item key="DIALOG_HEIGHT" value="434"/>
+		<item key="TOGGLE_SELECTED" value="false"/>
+	</section>
 </section>

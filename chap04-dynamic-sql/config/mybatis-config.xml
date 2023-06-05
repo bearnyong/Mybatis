@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 문서의 타입을 mybatis로 변경하는 것이다. -->
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+	<properties resource = "connection-info.properties"/>
+	<environments default="dev">
+		<!-- 환경설정 정보에 대한 ID -->
+		<environment id="dev">	
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<!-- xml의 ${driver}는 자바에서 쓰는 변수명을 xml 파일에서 정의할 떄 쓰는 형식
+				( = 얘는 변수야! 하고 알려주는거임) -->
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<!-- 패키지 단위로 등록하기 -->
+		<package name="com.greedy.mapper"/>
+	</mappers>
+</configuration>

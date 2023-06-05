@@ -26,6 +26,8 @@ public class MenuController {
 	}
 	
 
+	
+	/*case2*/
 	public void findMenuByMenuCode(Map<String, String> inputMenuCode) {
 		int code = Integer.parseInt(inputMenuCode.get("code"));
 
@@ -38,6 +40,8 @@ public class MenuController {
 
 	}
 
+	
+	/*case3*/
 	public void registNewMenu(Map<String, String> inputMenu) {
 		String name = inputMenu.get("name");
 		int price = Integer.parseInt(inputMenu.get("price"));
@@ -55,6 +59,8 @@ public class MenuController {
 		}
 	}
 
+	
+	/*case4*/
 	public void modifyMenu(Map<String, String> inputModifyMenu) {
 		ModifyMenuDTO menuDTO = new ModifyMenuDTO();
 
@@ -71,6 +77,9 @@ public class MenuController {
 		}
 	}
 
+	
+	
+	/*case5*/
 	public void removeMenu(Map<String, String> inputMenuCode) {
 		int code = Integer.parseInt(inputMenuCode.get("code"));
 

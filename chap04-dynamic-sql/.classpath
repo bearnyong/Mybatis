@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/> <!-- 소스코드를 읽어오는 루트 설정 -->
+	
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	
+	<classpathentry kind="src" path="mappers"/> <!-- mybatis Java & xml config 설정을 위해서 추가해야됨 -->
+	<classpathentry kind="src" path="resources"/> <!-- log4j 설정을 위해서 추가해야됨 -->
+	<classpathentry kind="src" path="config"/> <!-- xml config 설정을 위한 등록 -->
+	
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/log4jdbc-log4j2-jdbc4.1-1.16.jar"/>
+	<classpathentry kind="lib" path="lib/mybatis-3.4.6.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc6-11.2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.30.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.7.30.jar"/>
+	<classpathentry kind="output" path="bin"/> <!-- 컴파일된 파일이 배포되는 루트 -->
+</classpath>
