@@ -5,6 +5,7 @@ import static com.greedy.common.Template.getSqlSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -49,17 +50,137 @@ public class MenuService {
 		return menuList;
 	}
 
-	public void selectMenuBySubCategory(SearchCriteria searchDTO) {
+	public List<MenuDTO> searchMenu(SearchCriteria searchDTO) {
 		/*1.sqlConnection*/
 		SqlSession sqlSession = getSqlSession();
 		
 		/*2.매퍼 호출*/
+		mapper = sqlSession.getMapper(DynamicSqlMapper.class);
 		
-		/*3.도메인 로직 수행*/
-		/*3.1.쿼리 수행하기*/
+		/*3.도메인 로직 수행(카테고리 또는 이름을 입력 받아 조회하기)*/
+		/*3.1.쿼리 수행하기(결과가 N개가 될 수 있음)*/
+		List<MenuDTO> menuList = mapper.searchMenu(searchDTO);
+		
 		/*4.커넥션 닫기*/
+		sqlSession.close();
+
+		/*if : 카테고리에 해당하는 메뉴가 없는 경우*/
 		/*5.반환하기*/
+		if(Objects.isNull(menuList)) {
+			return null;
+		} else {
+			return menuList;
+		}
 		
 	}
+
+	public List<MenuDTO> searchMenuBySubCategory(SearchCriteria searchCriteria) {
+		/*sqlSession 생성하기*/
+		SqlSession sqlSession = getSqlSession();
+		
+		/*매퍼 꺼내오기*/
+		mapper = sqlSession.getMapper(DynamicSqlMapper.class);
+		
+		/*도메인 로직 -> 쿼리실행 -> 결과 확인*/
+		List<MenuDTO> menuList = mapper.searchMenuBySubCategory(searchCriteria);
+		
+		/*커넥션 닫기*/
+		sqlSession.close();
+		
+		/*반환하기*/
+		return menuList;
+	}
+
+	public List<MenuDTO> searchMenuByRandomMenuCode(List<Integer> list) {
+		/*sqlSession을 생성한다.*/
+		SqlSession sqlSession = getSqlSession();
+		
+		/*매퍼를 호출한다.*/
+		mapper = sqlSession.getMapper(DynamicSqlMapper.class);
+		
+		/*도메인 로직 -> 쿼리 -> 결과확인*/
+		Map<String, List<Integer>> criteria = new HashMap<>();
+		criteria.put("randomMenuCodeList", list);
+		
+		List<MenuDTO> menuList = mapper.searchMenuByRandomMenuCode(/*criteria*/);
+		
+		/*Session(커넥션) 닫기*/
+		sqlSession.close();
+		
+		/*반환하기*/
+		if(menuList.size() == 0) {
+			return null;
+		} else {
+			return menuList;
+		}
+		
+	}
+
+	public List<MenuDTO> searchMenuByCodeOrSearchAll(SearchCriteria searchCriteria) {
+		/*sqlSession을 생성한다.*/
+		SqlSession sqlSession = getSqlSession();
+		
+		/*매퍼를 호출한다.*/
+		mapper = sqlSession.getMapper(DynamicSqlMapper.class);
+		
+		/*도메인 로직 -> 쿼리 -> 결과확인*/
+		List<MenuDTO> menuList = mapper.searchMenuByCodeOrSearchAll(searchCriteria);
+		
+		/*Session(커넥션) 닫기*/
+		sqlSession.close();
+		
+		/*반환하기*/
+		if(menuList.size() == 0) {
+			return null;
+		} else {
+			return menuList;
+		}
+	}
+
+	public List<MenuDTO> searchMenuBynameOrCategory(Map<String, Object> searchMap) {
+		/*sqlSession을 생성한다.*/
+		SqlSession sqlSession = getSqlSession();
+		
+		/*매퍼를 호출한다.*/
+		mapper = sqlSession.getMapper(DynamicSqlMapper.class);
+		
+		/*도메인 로직 -> 쿼리 -> 결과확인*/
+		List<MenuDTO> menuList = mapper.searchMenuBynameOrCategory(searchMap);
+		
+		/*Session(커넥션) 닫기*/
+		sqlSession.close();
+		
+		/*반환하기*/
+		if(menuList.size() == 0) {
+			return null;
+		} else {
+			return menuList;
+		}
+		
+	}
+
+	public int modifyMenu(Map<String, Object> valueMap) {
+		/*sqlSession을 생성한다.*/
+		SqlSession session = getSqlSession();
+		
+		/*매퍼를 호출한다.*/
+		mapper = session.getMapper(DynamicSqlMapper.class);
+		
+		/*도메인 로직 -> (생략)유효성 체크([controller] price가 양수값인지, menucode 참조키 이런거 다 신경써야됨...)
+		 * -> 쿼리 -> 결과확인*/
+		int result = mapper.modifyMenuuu(valueMap);
+		if(result>0) {
+			session.commit();
+		} else {
+			session.rollback();
+		}
+		
+		/*Session(커넥션) 닫기*/
+		session.close();
+		
+		/*반환하기*/
+		return result;
+	}
+
 
 }

@@ -22,7 +22,6 @@
 <fullyQualifiedTypeName name="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
 <fullyQualifiedTypeName name="javax.security.auth.login.Configuration"/>
 <fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSessionFactoryBuilder"/>
-<fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
 <fullyQualifiedTypeName name="org.apache.ibatis.session.Configuration"/>
 <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Param"/>
 <fullyQualifiedTypeName name="org.apache.ibatis.annotations.ResultMap"/>
@@ -31,9 +30,16 @@
 <fullyQualifiedTypeName name="com.greedy.section03.Template"/>
 <fullyQualifiedTypeName name="com.greedy.section01.MenuDTO"/>
 <fullyQualifiedTypeName name="com.greedy.dto.MenuDTO"/>
+<fullyQualifiedTypeName name="javax.naming.directory.SearchControls"/>
+<fullyQualifiedTypeName name="com.greedy.mapper.DynamicSqlMapper"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
+<fullyQualifiedTypeName name="java.util.Objects"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.greedy.section01.MenuService"/>
+<fullyQualifiedTypeName name="com.greedy.dto.SearchCriteria"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="javax.naming.directory.SearchControls"/>
-<fullyQualifiedTypeName name="com.greedy.dto.SearchCriteria"/>
 </qualifiedTypeNameHistroy>

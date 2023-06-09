@@ -43,4 +43,220 @@
      ORDER BY MENU_CODE
   </select>
   
+  <select id="searchMenu" parameterType="SearchCriteria" resultMap="menuResultMap">
+  	SELECT
+  		   A.MENU_CODE,
+  		   A.MENU_NAME,
+  		   A.MENU_PRICE,
+  		   A.CATEGORY_CODE,
+  		   A.ORDERABLE_STATUS
+  	  FROM TBL_MENU A
+  	 <if test="condition == 'category'">
+  	  JOIN TBL_CATEGORY B ON (A.CATEGORY_CODE = B.CATEGORY_CODE)
+  	 </if>
+  	 WHERE A.ORDERABLE_STATUS = 'Y'
+  	 <if test="condition == 'name'">
+  	   AND A.MENU_NAME LIKE '%' || #{value} || '%'
+  	 </if>
+  	 <if test="condition == 'category'">
+  	   AND B.CATEGORY_NAME = #{value}
+  	 </if>
+  </select>
+  
+  <select id="searchMenuBySubCategory" parameterType="SearchCriteria" resultMap="menuResultMap">
+  	SELECT
+  		   MENU_CODE,
+  		   MENU_NAME,
+  		   MENU_PRICE,
+  		   CATEGORY_CODE,
+  		   ORDERABLE_STATUS
+      FROM TBL_MENU
+     WHERE ORDERABLE_STATUS = 'Y'
+     <!-- chose : switch와 비슷한 느낌 -->
+     <choose>
+     	<when test="value == '식사'">
+     		AND CATEGORY_CODE IN (4,5,6,7)
+     	</when>
+     	<when test="value == '음료'">
+     		AND CATEGORY_CODE IN (8,9,10)
+     	</when>
+     	<!-- otherwise : default와 비슷한 느낌 -->
+     	<otherwise>
+     		AND CATEGORY_CODE IN (11,12)
+     	</otherwise>
+     </choose>
+     	ORDER BY MENU_CODE
+  </select>
+  	
+   <select id="searchMenuByRandomMenuCode" parameterType="hashMap" resultMap="menuResultMap">
+     SELECT 
+            MENU_CODE,
+            MENU_NAME,
+            MENU_PRICE,
+            CATEGORY_CODE,
+            ORDERABLE_STATUS
+       FROM TBL_MENU
+      WHERE ORDERABLE_STATUS = 'Y'
+        AND MENU_CODE IN 
+     <!-- 01. foreach : 해당 조건을 반복할 때 사용(리스트 값을 한 번에 넣을 수 없기 때문에..
+      "(" 최초 실행 시, ", " 값 구분, ")" 값이 다 들어오고 종료될 때...-->
+     <!-- 01. <foreach collection="randomMenuCodeList" item="menuCode" open="(" separator=", " close=")"> -->
+     <!-- 02.
+     	    정적 필드 혹은 정적 메소드에 직접 접근하여 사용할 수 있다.
+     	    정적 필드 접근 : @ 풀 클래스명 @ 필드명
+     	    정적 메소드 접근 : @ 풀클래스명 @ 메소드명() -->
+     <!-- 02 -->
+     <foreach collection="@com.greedy.section01.Application01@createRandomMenuCodeList()"
+     		  item="menuCode" open="(" separator=", " close=")">
+       #{menuCode}
+     </foreach>
+  </select>
+  
+  <select id="searchMenuByCodeOrSearchAll" parameterType="SearchCriteria" resultMap="menuResultMap">
+  	SELECT 
+            MENU_CODE,
+            MENU_NAME,
+            MENU_PRICE,
+            CATEGORY_CODE,
+            ORDERABLE_STATUS
+       FROM TBL_MENU
+      <if test="condition eq 'menuCode'">
+      	<where>
+      		MENU_CODE = #{value}
+      	</where>
+      </if>
+  </select>
+  	
+  <select id="searchMenuBynameOrCategory" parameterType="hashMap" resultMap="menuResultMap">
+  	SELECT 
+            MENU_CODE,
+            MENU_NAME,
+            MENU_PRICE,
+            CATEGORY_CODE,
+            ORDERABLE_STATUS
+       FROM TBL_MENU
+      <!-- 아래의 경우 category로 검색을 하고자 할 때 문제가 발생된다. 어떤 문제? where 조건이 기술되지 않는다.
+      <if test="nameValue" != null>
+      WHERE MENU_NAME LIKE '%' || #{nameValue} || '%'
+      </if>
+      <if test="categoryValue" != null>
+      WHERE CATEGORY_CODE = #{categoryValue}
+      </if> -->
+      <!-- 해결방법1 <where>태그를 이용한다. -->
+      <!-- 
+      	   WHERE 태그는 앞에 WHERE로 시작하지 않으면 자동으로 WHERE를 붙여준다.
+      	     또한 WHERE 절 내부에 모두 쿼리문이 추가되지 않는 상황인 경우 WHERE를 무시한다.
+      	     단, NAME 부분에 WHERE를 뺴주어야 한다. 빼주지 않으면 WHERE WHERE 두 개가 생기게 된다.
+      	   AND나 OR로 시작하게 되면 자동으로 해당 단어를 지워준다.
+      -->
+     <!--  <where>
+      	<if test="nameValue != null">
+      		MENU_NAME SIKE '%' || #{nameValue} || '%'
+      	</if>
+      	<if test="categoryValue != null">
+      		AND CATEGORY_CODE = #{categoryValue}
+      	</if>
+      </where> -->
+      
+      <!-- 해결방법2 <trim> 태그를 이용한다. -->
+      <!-- AND | OR 혹은 아무것도 없을 때 prefix인 where을 붙여준다... -->
+      <!-- 
+      	     조회 조건에 AND 혹은 OR로 시작하지 않는 다른 문자로 시작하는 경우
+      	   WHERE 엘리먼트가 기본적으로 처리하는 기능에 추가 규칙을 정의하기 위해 TRIM 엘리먼트를 제공한다.
+      	   PREFIX : 처리 후 엘리먼트의 내용이 있으면 가장 앞에 붙여주는 내용을 기술한다.
+      	   PREFIXOVERRIDES : 처리 후 엘리먼트 내용 중 가장 앞에 해당 문자들이 있다면 자동으로 지워준다.
+      	   SUFFIX : 처리 후 엘리먼트 내에 내용이 있으면 가장 뒤에 붙여준다.
+      	   SUFFIXOVERRIDES : 처리 후 엘리먼트 내용 중 가장 뒤에 해당 문자들이 있다면 자동으로 지워준다.
+       -->
+      <!-- <trim prefix="WHERE" prefixOverrides="AND | OR">
+      	<if test="nameValue != null">
+      		AND MENU_NAME LIKE '%' || #{nameValue} || '%'
+      	</if>
+      	<if test="categoryValue != null">
+      		AND CATEGORY_CODE = #{categoryValue}
+      	</if>
+      </trim> -->
+
+      <!-- 해결방법3 -->
+      <!-- 
+      	   Ognl 표현식을 이용하여 변수를 만든 후 바인딩을 한다.
+      	   _parameter가 파라미터로 전달되면 Object를 의미하는데 이 때 Object의 타입이 collection이면.get을 이용하여
+      	   _parameter가 Object이면 .getter를 이용한다.
+       -->
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+      	<bind name="namePattern" value="'%'+ _parameter.get('nameValue')+'%'"/>
+      	<if test="nameValue != null">
+      		MENU_NAME LIKE #{namePattern}
+      	</if>
+      	<if test="categoryValue != null">
+      		AND CATEGORY_CODE = #{categoryValue}
+      	</if>
+      </trim>
+  </select>
+  
+  <update id="modifyMenuuu" parameterType="hashmap">
+  	<!-- 
+  		 update의 경우 모든 변경된 값을 입력해야 한다는 가정하에 이렇게 쿼리문을 작성할 수 있다.
+  		  하지만 값을 입력한 일부 컬럼만 값을 변경하려 한다면 이러한 쿼리문은 원하지 않는 값을 변경할 가능성이 생기게 된다.
+  		  이 때 값을 입력한 경ㅇ우에만 변경할 수 있도록 if 엘리먼트를 이용해 본다. 
+  	-->
+  	<!--
+  	UPDATE TBL_MENU
+  	   SET MENU_NAME = #{nameValue},
+  	   	   CATEGORY_CODE = #{categoryValue},
+  	   	   MENU_PRICE = #{price} ,
+  	   	   ORDERABLE_STATUS = #{status}
+  	 WHERE MENU_CODE = #{code}
+  	 -->
+  	 	 
+  	 <!-- 변경할 메뉴를 입력하지 않는 경우 SET이 빠지는 문제가 발생하게 된다. --> 
+  	 <!-- 
+  	 UPDATE TBL_MENU
+  	 <if test="nameValue != null">
+  	 	SET MENU_NAME = #{nameValue}
+  	 </if>
+  	 <if test="categoryCode">
+  	 	,  CATEGORY_CODE = #{categoryValue}
+  	 </if>
+  	 <if test="price != null">
+  	 	, MENU_PRICE = #{price}
+  	 </if>
+  	 <if test="status != null">
+  	 	, ORDERABLE_STATUS = #{status}
+  	 </if>
+  	  WHERE MENU_CODE = #{code} -->
+  	 <!-- <SET> 엘리먼트의 경우 앞에  ,가 아닌 뒤에 ,를 인식하기 때문에 주의해야 한다. -->
+  <!-- 
+  	 UPDATE TBL_MENU
+  	 	<set>
+  	 		<if test = "nameValue != null">
+  	 			MENU_NAME = #{nameValue}, 
+  	 		</if>
+  	 		<if test = "categoryValue != null">
+  	 			CATEGORY_CODE = #{categoryValue},
+  	 		</if>
+  	 	</set>
+  	 	<if test="price != null">
+  	 		, MENU_PRICE = #{price}
+  	 	</if>
+  	 	<if test="status != null">
+  	 		, ORDERABLE_STATUS = #{status}
+  	 	</if>
+  	  WHERE MENU_CODE = #{code}
+  	  -->
+  	 
+  	 <!-- 해경방법2 <trim> -->
+  	 UPDATE TBL_MENU
+  	 	<trim prefix="SET" prefixOverrides=",">
+  	 		<if test = "nameValue != null">
+  	 			, MENU_NAME = #{nameValue}
+  	 		</if>
+  	 		<if test = "categoryValue != null">
+  	 			, CATEGORY_CODE = #{categoryValue}
+  	 		</if>
+  	 	</trim>
+  	  WHERE MENU_CODE = #{code}
+  	 
+  </update>
+  
 </mapper>
