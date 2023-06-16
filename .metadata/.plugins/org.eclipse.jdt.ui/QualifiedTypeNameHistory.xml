@@ -39,7 +39,7 @@
 <fullyQualifiedTypeName name="java.util.Collections"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.greedy.section01.MenuService"/>
-<fullyQualifiedTypeName name="com.greedy.dto.SearchCriteria"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="com.greedy.dto.SearchCriteria"/>
 </qualifiedTypeNameHistroy>
