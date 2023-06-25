@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+	매퍼는 DAO 인터페이스와 동일한 패키지에 두고 DAO 인터페이스의 풀네임을 namespace로 지정해야 한다.
+	또한 mapper 인터페이스와 xml의 이름이 동일해야 하며
+	작성한 메소드의 이름과 id가 일치하며 리턴 타입이 일치하는 쿼리문을 모두 작성해야 한다.
+ -->
+
+<!-- DAO interface와 연결하기 위한 경로 지정...(풀네임 필수!!) -->
+<mapper namespace="com.greedy.test01.PostDAO">
+	
+	<!-- 조회할 컬럼과 DTO를 매핑시키기 위한 설정 -->
+	<resultMap type="com.greedy.test01.PostDTO" id="postResultMap" >
+		<id property="postNum" column="POST_NUM"/>
+		<result property="blogNum" column="BLOG_NUM"/>
+		<result property="fileNum" column="FILE_NUM"/>
+		<result property="postTitle" column="POST_TITLE"/>
+		<result property="postCon" column="POST_CON"/>
+		<result property="PostTime" column="POST_TIME"/>
+		<result property="state" column="STATE"/>
+		<result property="cateNum" column="CATE_NUM"/>
+	</resultMap>
+	
+	
+	<!-- case1 -->
+	<select id="selectAllPost" resultMap="postResultMap">
+		SELECT
+                *
+        FROM POST
+	</select>
+	
+	
+	<!-- case2 -->
+	<select id="daoPostCode" resultMap="postResultMap">
+		SELECT 
+    		   POST_NUM,
+    		   POST_TITLE,
+    		   POST_CON,
+    		   POST_TIME
+		  FROM POST
+		 WHERE STATE='Y'
+		   AND POST_NUM = #{postNum}
+	</select>
+	
+	
+	<!-- case3 -->
+	<!-- resultMap="postResultMap"이 왜 안되는지 쌤한테 여쭤보깅... -->
+	<insert id="addPostPost" parameterType="com.greedy.test01.PostDAO">
+		INSERT
+		  INTO POST
+		  (
+			POST_NUM,
+			BLOG_NUM,
+			FILE_NUM,
+			POST_TITLE,
+			POST_CON,
+			POST_TIME,
+			STATE,
+			CATE_NUM
+		  )
+		  VALUES
+		  (
+			SEQ_POSTNUM.NEXTVAL,
+			#{blogNum},
+			#{fileNum},
+			#{postTitle},
+			#{postCon},
+			SYSDATE,
+			'Y',
+			#{cateNum}
+		  )
+	</insert>
+	
+	
+	<!-- case4 -->
+	<update id="updatePostPost" parameterType="com.greedy.test01.PostDAO">
+		UPDATE POST
+    		SET POST_TITLE = #{postTitle},
+        		POST_TIME = SYSDATE,
+        		CATE_NUM = #{cateNum}
+  		 WHERE POST_NUM = #{postNum}
+	</update>
+	
+	
+	<!-- case5 비활성화-->
+	<update id="deletePostPost" parameterType="com.greedy.test01.PostDAO">
+		UPDATE POST
+		 SET STATE = 'N'
+		WHERE POST_NUM = #{postNum}
+	</update>
+	
+</mapper>
